@@ -15,6 +15,7 @@ const class2Type: any = {
 const toString: Function = Object.prototype.toString;
 // 获取父对象
 const getProto = Object.getPrototypeOf;
+// 对象自身属性中是否具有指定的属性
 const hasOwn = class2Type.hasOwnProperty;
 const fnToString = hasOwn.toString;
 // 获取对象字符串 '[object Object]'

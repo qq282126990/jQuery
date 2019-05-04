@@ -8,8 +8,8 @@ import utils from './utils';
 
         // jQuery.prototype.init.prototype = jQuery.prototype
         // 引用指向同一个 prototype 对象
-        const jQuery = function () {
-            // return new jQuery.prototype.init();
+        const jQuery = function (selector: string | object | Function, context: string) {
+            return new jQuery.prototype.init(selector, context);
         }
 
         // jQuery.fn 实际上是 prototype 的一个引用指向 jQuery.prototype
@@ -108,7 +108,10 @@ import utils from './utils';
         }
 
 
-        console.log(jQuery.extend({ a: 1 }, { b: 2 }))
+        jQuery.extend({
+            // 一堆静态属性和方法
+            // 用 extend 绑定，而不是直接在 jQuery 上写
+        });
 
         return jQuery;
     })();

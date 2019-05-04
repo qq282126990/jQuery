@@ -12,6 +12,7 @@ declare global {
         type: Function,
         isFunction: Function,
         isPlainObject: Function,
-        fn: Object
+        fn: Object,
+        makeArray: Function
     }
 }
