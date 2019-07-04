@@ -3,6 +3,7 @@ import { rsingleTag } from './core/var/rsingleTag';
 import { toString } from './core/var/toString';
 import { toType } from './core/toType';
 import { isWindow } from './core/var/isWindow';
+
 // 将 toString 函数返回的字符串转成
 // const class2Type: any = {
 //     '[object Boolean]': 'boolean',
@@ -30,6 +31,11 @@ const ObjectFunctionString = fnToString.call(Object);
 
 // 判断是否是数组
 function isArrayLike(obj: any) {
+    // Support: real iOS 8.2 only (not reproducible in simulator)
+    // `in` check used to prevent JIT error (gh-2145)
+    // hasOwn isn't used here due to false negatives
+    // regarding Nodelist length in IE
+
     let length = !!obj && obj.length,
         type = toType(obj);
 
@@ -143,6 +149,8 @@ export default function (jQuery: Object) {
             return [context.createElement(parsed[1])];
         }
 
+        console.log('?')
+
         // parsed = buildFragment([data], context, scripts);
 
         if (scripts && scripts.length) {
@@ -156,13 +164,18 @@ export default function (jQuery: Object) {
 
 
     // 把左边数组或字符串并入右边的数组或一个新数组
-    jQuery.makeArray = function (arr: [] | string, results: []) {
+    jQuery.makeArray = function (arr: [], results: []) {
         let ret = results || [];
 
         if (arr != null) {
-            // if(){
-
-            // }
+            if(isArrayLike(Object(arr))){
+                jQuery.merge(ret,typeof arr === 'string' ? [arr] : arr);
+            }
+            else {
+                arr.push.call(ret, arr);
+            }
         }
+
+        return ret;
     }
 }

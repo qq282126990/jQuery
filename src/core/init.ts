@@ -110,6 +110,33 @@ export default function (jQuery: any) {
         return jQuery.makeArray(selector, this);
     }
 
+    jQuery.fn.find = function (selector: any) {
+        let i, ret, len = this.length, self = this;
+
+        // 处理 不是HTML 字符串情况，包括 $('div') $('#div') $('.class')
+        if (selector !== 'string') {
+
+            return this.pushStack(jQuery(selector).filter(() => {
+                for (i = 0; i < len; i++) {
+                    // jQuery.contains(a, b) 判断 a 是否是 b 的父代
+                    if (jQuery.contains(self[i], this)) {
+                        return true;
+                    }
+                }
+            }))
+        }
+
+        ret = this.pushStack([]);
+
+        for (i = 0; i < len; i++) {
+            // 在这里引用到 jQuery.find 函数
+            jQuery.find(selector, self[i], ret);
+        }
+
+        // uniqueSort 去重函数
+        return len > 1 ? jQuery.uniqueSort(ret) : ret;
+    }
+
     // 为init函数提供jQuery原型以供以后实例化
     init.prototype = jQuery.fn;
 

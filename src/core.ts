@@ -1,5 +1,6 @@
 import init from './core/init';
 import utils from './utils';
+import Sizzle from './core/sizzle';
 
 (function (window) {
     const version = '0.0.1';
@@ -106,6 +107,8 @@ import utils from './utils';
             // 返回修改后的对象
             return target;
         }
+
+        jQuery.find = Sizzle;
 
 
         jQuery.extend({
